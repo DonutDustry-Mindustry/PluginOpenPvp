@@ -1,4 +1,4 @@
-package main.java.grely;
+package main.java.plugin;
 
 import arc.util.*;
 import mindustry.*;
@@ -10,9 +10,9 @@ import mindustry.gen.Player;
 import mindustry.mod.*;
 import static mindustry.entities.Units.*;
 import java.text.MessageFormat;
-import static main.java.grely.func.*;
-import static main.java.grely.PEvents.*;
-import static main.java.grely.PVars.*;
+import static main.java.plugin.func.*;
+import static main.java.plugin.PEvents.*;
+import static main.java.plugin.PVars.*;
 
 public class Main extends Plugin {
     @Override
@@ -63,8 +63,8 @@ public class Main extends Plugin {
                 player.sendMessage("[scarlet]Вы уже в серой команде!");
             }
         });
-        handler.<Player>register("yes", "<#player-id>", "Одобрить запрос на вступление", (args, player)->{
-            Player requester = Groups.player.find(p->String.valueOf(p.id).equals(args[0].replace("#", "")));
+        handler.<Player>register("yes", "<#player-name>", "Одобрить запрос на вступление", (args, player)->{
+            Player requester = Groups.player.find(p->p.plainName().contains(args[0]));
             if(requester == null) {
                 player.sendMessage("[scarlet]Игрок не найден");
                 return;

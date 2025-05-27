@@ -1,4 +1,4 @@
-package main.java.grely;
+package main.java.plugin;
 
 import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
@@ -17,7 +17,7 @@ import lombok.Setter;
 import static mindustry.content.Planets.*;
 import mindustry.world.Block;
 
-import static main.java.grely.PVars.*;
+import static main.java.plugin.PVars.*;
 
 public class func {
     public static Seq<Building> getCores() {

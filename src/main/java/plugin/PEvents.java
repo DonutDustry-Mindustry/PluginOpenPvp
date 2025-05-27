@@ -1,4 +1,4 @@
-package main.java.grely;
+package main.java.plugin;
 
 import arc.Events;
 import arc.graphics.Color;
@@ -15,8 +15,8 @@ import mindustry.gen.Call;
 import mindustry.world.Tile;
 import mindustry.gen.*;
 
-import static main.java.grely.PVars.*;
-import static main.java.grely.func.*;
+import static main.java.plugin.PVars.*;
+import static main.java.plugin.func.*;
 
 public class PEvents {
     public static int coreProtectRad = 160;
@@ -130,8 +130,6 @@ public class PEvents {
                         } else if(req.getCount()==1) {
                             req.increaseCount();
                             TeamDat dat = playerTeams.find(pt->pt.getTeam()==t.build.team());
-                            if(dat == null)
-                                return;
                             dat.getOwner().sendMessage("К вам поступил запрос от "+player.coloredName()+" []на вступление в вашу команду! Пропишите /yes #player-id для одобрения!");
                             player.sendMessage("[green]Запрос отправлен!");
                             return;

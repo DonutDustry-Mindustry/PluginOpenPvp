@@ -1,7 +1,7 @@
 {
-  "name": "openpvp",
+  "name": "openPvp",
   "author": "grelylrz",
-  "main": "main.java.grely.Main",
-  "description": "idk",
+  "main": "main.java.plugin.Main",
+  "description": "Plugin for OpenPVP in mindustry",
   "version": 1.0
 }

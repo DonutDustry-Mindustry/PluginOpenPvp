@@ -1,9 +1,9 @@
-package main.java.grely;
+package main.java.plugin;
 
 import arc.struct.Seq;
 import mindustry.gen.*;
 import arc.util.Timer;
-import static main.java.grely.func.*;
+import static main.java.plugin.func.*;
 
 public class PVars {
     public static Seq<Player> awaitingClick = new Seq<>();
