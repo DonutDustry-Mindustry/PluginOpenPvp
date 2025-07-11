@@ -23,20 +23,20 @@ public class PEvents {
     public static void initEvents() {
         Log.info("Loading events.");
         Events.on(EventType.BlockBuildEndEvent.class, e -> {
-            if(e.tile == null /*How?*/ || e.tile.build == null) {
+            if (e.tile == null /*How?*/ || e.tile.build == null) {
                 Log.debug("[BlockBuildEnvEvent]Tile/build is null");
                 return;
             }
             Tile t = e.tile;
             Timer.schedule(() -> {
                 Log.debug("Timer!");
-                if(e.tile == null /*How?*/ || e.tile.build == null) {
+                if (e.tile == null /*How?*/ || e.tile.build == null) {
                     Log.debug("[BlockBuildEnvEvent]Tile/build is null");
                     return;
                 }
-                if(e.team != Team.derelict && !e.breaking && e.tile.block() == Blocks.vault /*ТЗ*/){
+                if (e.team != Team.derelict && !e.breaking && e.tile.block() == Blocks.vault /*ТЗ*/){
                     Building core = getCores().find(b -> {
-                        if(b.team != e.team) {
+                        if (b.team != e.team) {
                             int bx = (int) (b.x / 8);
                             int by = (int) (b.y / 8);
                             int dx = bx - t.x;
@@ -46,7 +46,7 @@ public class PEvents {
                             return false;
                         }
                     });
-                    if(core == null) {
+                    if (core == null) {
                         Call.effect(Fx.mine, t.x * 8, t.y * 8, 1, Color.red);
                         t.setNet(Blocks.coreShard, e.team, 1);
                         // Log.debug("Setted");
@@ -62,15 +62,15 @@ public class PEvents {
         // Это уже конечное подключение после загрузки мира.
         Events.on(EventType.PlayerJoin.class, e -> {
             Player player = e.player;
-            leftPlayerData d = leftDatas.find(p->p.getUuid().equals(player.uuid()));
-            if(d != null) {
+            /* leftPlayerData d = leftDatas.find(p->p.getUuid().equals(player.uuid()));
+            if (d != null) {
                 player.sendMessage("[green]Похоже, вы уже учавствовали в игре, ваша команда будет восстановлена. " + d.getTeam().name);
                 player.team(d.getTeam());
                 leftDatas.remove(d);
                 return;
-            }
+            } */
             player.team(Team.derelict);
-            if(!awaitingClick.contains(player))
+            if (!awaitingClick.contains(player))
                 awaitingClick.add(player);
             // Кому лень читать - тут пишу о том как войти в игру.
             player.sendMessage("[tan]Вы зашли на сервер с режимом OpenPvP, для продолжения, нажмите на любой тайл, на нем появится ваше ядро. Если при нажатии этого не случилось, попробуйте кликнуть еще раз или перезайти на сервер, в случае, если это не поможет, пожалуйста, обратитесь в наш [blue]Discord[tan] сервер.");
@@ -78,12 +78,12 @@ public class PEvents {
 
         Events.on(EventType.PlayerLeave.class, e -> {
             Player player = e.player;
-            if(awaitingClick.contains(player))
+            if (awaitingClick.contains(player))
                 awaitingClick.remove(player);
-            if(player.team() != Team.derelict) {
-                leftPlayerData huy = new leftPlayerData(player, player.team());
-                huy.setUuid(player.uuid());
-                leftDatas.add(huy);
+            if (player.team() != Team.derelict) {
+                /* leftPlayerData leftPlayer = new leftPlayerData(player, player.team());
+                leftPlayer.setUuid(player.uuid());
+                leftDatas.add(leftPlayer); */
                 Timer.schedule(() -> {
                     if (player.team() != Team.derelict && Groups.player.find(p -> p.uuid().equals(player.uuid())) == null) {
                         Groups.build.each(b -> {
@@ -92,48 +92,48 @@ public class PEvents {
                         });
                         TeamDat fdat = playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == player.team());
                         if (fdat != null) {
-                            if(Groups.player.size() < 2)
+                            if (Groups.player.size() < 2)
                                 gameStarted = false;
                             playerTeams.remove(new TeamDat(player, player.team()));
                             playerTeams.remove(fdat);
                         }
-                        if (leftDatas.contains(huy))
-                            leftDatas.remove(huy);
-                    }
+                        /* if (leftDatas.contains(leftPlayer))
+                            leftDatas.remove(leftPlayer); */
+                    } 
                 }, 300);
             }
         });
 
         Events.on(EventType.TapEvent.class, e -> {
-            if(e.tile == null) {
+            if (e.tile == null) {
                 Log.debug("[TapEvent]Tile is null!");
                 return;
             }
-            if(!awaitingClick.contains(e.player))
+            if (!awaitingClick.contains(e.player))
                 return;
                 Log.debug("Thread started!");
                 Player player = e.player;
                 Tile t = e.tile;
-                if(t.block() != Blocks.air && t.build != null) {
+                if (t.block() != Blocks.air && t.build != null) {
                     player.sendMessage("[scarlet]На этом месте расположен [white]" + t.block().emoji());
-                    joinRequest req = joinRequests.find(re->re.getRequester()==player);
-                    if(req == null) {
+                    joinRequest req = joinRequests.find(re->re.getRequester ()==player);
+                    if (req == null) {
                         player.sendMessage("Если вы хотите вступить в команду нажмите на любое из их ядер еще раз.");
                         joinRequests.add(new joinRequest(player, t.build.team()));
                         return;
                     } else {
-                        if(req.getTeam()!=t.build.team()) {
+                        if (req.getTeam()!=t.build.team()) {
                             joinRequests.remove(req);
                             player.sendMessage("[stat]Если вы хотите вступить в команду нажмите на любой их блок еще раз.");
                             joinRequests.add(new joinRequest(player, t.build.team()));
                             return;
-                        } else if(req.getCount()==1) {
+                        } else if (req.getCount()==1) {
                             req.increaseCount();
                             TeamDat dat = playerTeams.find(pt->pt.getTeam()==t.build.team());
-                            dat.getOwner().sendMessage("К вам поступил запрос от "+player.coloredName()+" []на вступление в вашу команду! Пропишите /yes #player-name для одобрения!");
+                            dat.getOwner ().sendMessage("К вам поступил запрос от "+player.coloredName()+" []на вступление в вашу команду! Пропишите /yes #player-name для одобрения!");
                             player.sendMessage("[green]Запрос отправлен!");
                             return;
-                        } else if(req.getCount()==2) {
+                        } else if (req.getCount()==2) {
                             player.sendMessage("[scarlet]Запрос уже отправлен!");
                             return;
                         } else {
@@ -149,22 +149,22 @@ public class PEvents {
                     int dy = by - t.y;
                     return dx * dx + dy * dy <= coreProtectRad * coreProtectRad;
                 });
-                if(core==null)
-                    core=getBuild().find(b->{
+                if (core==null)
+                    core=getBuild().find(b-> {
                         int bx = (int) (b.x / 8);
                         int by = (int) (b.y / 8);
                         int dx = bx - t.x;
                         int dy = by - t.y;
                         return dx * dx + dy * dy <= coreProtectRad-50 * coreProtectRad-50;
                     });
-                if(core == null) {
+                if (core == null) {
                     Log.debug("Finding free team...");
-                    if(playerTeams.size > 255) {
+                    if (playerTeams.size > 255) {
                         player.sendMessage("Извините, все команды заняты...");
                         return;
                     }
                     /*getTeam() using while cycle*/
-                    Threads.daemon(()->{
+                    Threads.daemon(() -> {
                     Team newTeam = getTeam();
                     Log.debug("Team @ found!", newTeam.name);
                     Call.effect(Fx.tapBlock, t.x*8, t.y*8, 1, Color.white);
@@ -172,11 +172,11 @@ public class PEvents {
                     addItems(t.build);
                     player.team(newTeam);
                     player.sendMessage("[green]С этого момента вы являетесь участником команды " + newTeam.coloredName());
-                    if(awaitingClick.contains(player))
+                    if (awaitingClick.contains(player))
                         awaitingClick.remove(player);
-                    if(playerTeams.find(SVOGOYDA->SVOGOYDA.getTeam()==player.team()) == null)
+                    if (playerTeams.find(SVOGOYDA->SVOGOYDA.getTeam()==player.team()) == null)
                         playerTeams.add(new TeamDat(player, newTeam));
-                    if(playerTeams.size > 1)
+                    if (playerTeams.size > 1)
                         gameStarted = true;
                     });
                 } else {
@@ -187,7 +187,7 @@ public class PEvents {
             Groups.player.each(p -> {
                 if (p.team().core() == null && p.team() != Team.derelict) {
                     TeamDat myaah = playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == p.team());
-                    if(myaah != null)
+                    if (myaah != null)
                         playerTeams.remove(myaah);
                     Groups.build.each(b -> {
                         if (b.team == p.team())
@@ -195,16 +195,16 @@ public class PEvents {
                     });
                     p.team(Team.derelict);
                     p.sendMessage("[scarlet]Вы проиграли!");
-                    if(myaah!=null)
+                    if (myaah!=null)
                         Call.sendMessage("Команда "+myaah.getTeam().coloredName()+" []проиграла!");
                     if (p.unit() != null)
                         p.unit().kill();
                 }
-                if(p.team().core() != null && p.team() != Team.derelict) {
+                if (p.team().core() != null && p.team() != Team.derelict) {
                     Building core = getCores(p.team()).find(e->e.block()==Blocks.coreNucleus);
-                    if(core == null) {
+                    if (core == null) {
                         TeamDat myaah = playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == p.team());
-                        if(myaah != null)
+                        if (myaah != null)
                             playerTeams.remove(myaah);
                         Groups.build.each(b -> {
                             if (b.team == p.team())
@@ -225,9 +225,9 @@ public class PEvents {
                 gameStarted = false;
             }
         });
-        Events.on(EventType.WorldLoadEvent.class, e -> Timer.schedule(()->{
+        Events.on(EventType.WorldLoadEvent.class, e -> Timer.schedule(() -> {
             Rules rules = Vars.state.rules.copy();
-            if(rules.pvp)
+            if (rules.pvp)
                 Log.info("Вы можете не ставить режим пвп вручную!");
             rules.canGameOver = false;
             rules.modeName = "OpenPvP";
@@ -249,15 +249,15 @@ public class PEvents {
 
             Team.sharded.cores().each(Building::kill);
             Team.derelict.cores().each(Building::kill);
-            for(Player p : Groups.player) {
-                if(awaitingClick.contains(p))
+            for (Player p : Groups.player) {
+                if (awaitingClick.contains(p))
                     awaitingClick.remove(p);
                 awaitingClick.add(p);
             }
-            if(GameOverWhen != null)
+            if (GameOverWhen != null)
                 GameOverWhen.cancel();
             GameStartWhen = System.currentTimeMillis();
-            GameOverWhen = Timer.schedule(()->{
+            GameOverWhen = Timer.schedule(() -> {
                 Call.sendMessage("[scarlet]Игра окончена!");
                 displayCores();
                 Events.fire(new EventType.GameOverEvent(Team.derelict));

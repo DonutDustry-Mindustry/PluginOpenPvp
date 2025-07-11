@@ -23,7 +23,7 @@ public class func {
     public static Seq<Building> getCores() {
         Seq<Building> ret = new Seq<>();
         Groups.build.each(b -> {
-            if(b.block == Blocks.coreShard || b.block == Blocks.coreAcropolis || b.block == Blocks.coreBastion || b.block == Blocks.coreCitadel || b.block == Blocks.coreFoundation || b.block == Blocks.coreNucleus)
+            if (b.block == Blocks.coreShard || b.block == Blocks.coreAcropolis || b.block == Blocks.coreBastion || b.block == Blocks.coreCitadel || b.block == Blocks.coreFoundation || b.block == Blocks.coreNucleus)
                 ret.add(b);
         });
         return ret;
@@ -38,7 +38,7 @@ public class func {
     public static Seq<Building> getCores(Team team) {
         Seq<Building> ret = new Seq<>();
         Groups.build.each(b -> {
-            if((b.block == Blocks.coreShard || b.block == Blocks.coreAcropolis || b.block == Blocks.coreBastion || b.block == Blocks.coreCitadel || b.block == Blocks.coreFoundation || b.block == Blocks.coreNucleus) && b.team() == team)
+            if ((b.block == Blocks.coreShard || b.block == Blocks.coreAcropolis || b.block == Blocks.coreBastion || b.block == Blocks.coreCitadel || b.block == Blocks.coreFoundation || b.block == Blocks.coreNucleus) && b.team() == team)
                 ret.add(b);
         });
         return ret;
@@ -62,7 +62,7 @@ public class func {
     public static Seq<Player> getPlayers(Team team) {
         Seq<Player> p = new Seq<>();
         Groups.player.each(s->{
-            if(s.team() == team)
+            if (s.team() == team)
                 p.add(s);
         });
         return p;
@@ -84,7 +84,7 @@ public class func {
 
 
     public static boolean isOwner(Player p, Team t) {
-        return playerTeams.find(zov -> zov.getTeam() == t && zov.getOwner() == p) != null;
+        return playerTeams.find(player -> player.getTeam() == t && player.getOwner() == p) != null;
     }
 
     public static int getCap(Team team) {
@@ -106,22 +106,22 @@ public class func {
     public static void clearData() {
         awaitingClick.clear();
         playerTeams.clear();
-        leftDatas.clear();
+        // leftDatas.clear();
         gameStarted = false;
     }
 
     public static void addItems(Building core) {
         try {
-            if(core == null)
+            if (core == null)
                 return;
-            if(Vars.state.rules.planet == sun) {
+            if (Vars.state.rules.planet == sun) {
                 core.items.add(Items.beryllium, 100);
                 core.items.add(Items.copper, 250);
                 core.items.add(Items.lead, 250);
-            } else if(Vars.state.rules.planet == serpulo) {
+            } else if (Vars.state.rules.planet == serpulo) {
                 core.items.add(Items.copper, 250);
                 core.items.add(Items.lead, 250);
-            } else if(Vars.state.rules.planet == erekir) {
+            } else if (Vars.state.rules.planet == erekir) {
                 core.items.add(Items.beryllium, 250);
             } else {
                 Log.err("Bruh.");
@@ -131,7 +131,7 @@ public class func {
         }
     }
 
-    @Getter
+  /*  @Getter
     @Setter
     public static class leftPlayerData {
         Player old;
@@ -156,7 +156,8 @@ public class func {
         void setTeam(Team newTeam) {
             this.team = newTeam;
         }
-    }
+    } */
+    
     @Getter
     @Setter
     public static class TeamDat {
@@ -174,6 +175,7 @@ public class func {
             return owner==p;
         }
     }
+    
     @Getter
     @Setter
     public static class joinRequest {
