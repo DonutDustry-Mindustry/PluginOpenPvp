@@ -57,7 +57,7 @@ public class Main extends Plugin {
                     gameStarted = false;
                 player.unit().kill();
                 Groups.build.each(b -> {
-                    if (b.team == player.team() && isOwner(player, player.team())
+                    if (b.team == player.team() && isOwner(player, player.team()))
                         b.kill();
                 });
                 player.team(Team.derelict);
@@ -106,7 +106,7 @@ public class Main extends Plugin {
             Log.info("Игрок не найден или он уже имеется в списке, посмотрите clicks!");
         });
         handler.register("clicks", "добавить игрока в ожидание клика", (args) -> {
-            awaitingClick.each(l->Log.info("@ @", l.plainName(), p.uuid()));
+            awaitingClick.each(p->Log.info("@ @", p.plainName(), p.uuid()));
         });
     }
 
