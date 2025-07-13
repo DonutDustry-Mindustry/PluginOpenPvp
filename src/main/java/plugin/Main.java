@@ -54,10 +54,16 @@ public class Main extends Plugin {
                     gameStarted = false;
                 player.unit().kill();
                 Groups.build.each(b -> {
-                    if (b.team == player.team() && isOwner(player, player.team()))
+                    if (b.team == player.team()) {
+		        if (!isOwner(player, player.team())) {
+			    player.sendMessage("[green]Вы были переведены в серую команду");
+			} else {
+			player.sendMessage("[green]Команда была уничтожена, Вы были переведены в серую команду");
                         playerTeams.remove(playerTeams.find(p -> p.getTeam() == player.team()));
-		        b.kill();
-                });
+			b.kill();
+			}
+		    }
+		});
                 player.team(Team.derelict);
             } else {
                 player.sendMessage("[scarlet]Вы уже в серой команде!");
