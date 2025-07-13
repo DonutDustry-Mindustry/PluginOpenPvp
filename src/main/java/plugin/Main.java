@@ -49,9 +49,9 @@ public class Main extends Plugin {
         });
         handler.<Player>register("teams", "Посмотреть занятые команды.", (args, player) -> playerTeams.each(t->player.sendMessage(t.getTeam().coloredName())));
         handler.<Player>register("spectate", "Перейти в серую команду.", (args, player) ->{
-            if(player.team() != Team.derelict) {
+            if (player.team() != Team.derelict) {
                 playerTeams.remove(playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == player.team()));
-                if(Groups.player.size() == 2)
+                if (Groups.player.size() == 2)
                     gameStarted = false;
                 player.unit().kill();
                 Groups.build.each(b -> {
@@ -65,27 +65,27 @@ public class Main extends Plugin {
         });
         handler.<Player>register("yes", "<#player-name>", "Одобрить запрос на вступление", (args, player)->{
             Player requester = Groups.player.find(p->p.plainName().contains(args[0]));
-            if(requester == null) {
+            if (requester == null) {
                 player.sendMessage("[scarlet]Игрок не найден");
                 return;
             }
-            if(requester.team() != Team.derelict) {
-                player.sendMessage("Извините, игрок вступил в команду "+requester.team().coloredName());
+            if (requester.team() != Team.derelict) {
+                player.sendMessage("Извините, игрок вступил в команду " + requester.team().coloredName());
                 return;
             }
             joinRequest samreq = joinRequests.find(p->p.getRequester()==requester);
-            if(player.team() != samreq.getTeam()) {
+            if (player.team() != samreq.getTeam()) {
                 player.sendMessage("[scarlet]Запрос отправлен не вашей команде!");
                 return;
             }
-            if(!isOwner(player, player.team())) {
+            if (!isOwner(player, player.team())) {
                 player.sendMessage("[scarlet]Вы не являетесь владельцем команды!");
                 return;
             }
             requester.team(player.team());
             joinRequests.remove(samreq);
             player.sendMessage("[green]Запрос одобрен!");
-            requester.sendMessage("[green]Владелец команды"+samreq.getTeam()+" одобрил запрос!");
+            requester.sendMessage("[green]Владелец команды"+samreq.getTeam() + " одобрил запрос!");
             awaitingClick.remove(requester);
         });
     }
@@ -103,7 +103,7 @@ public class Main extends Plugin {
             Log.info("Игрок не найден или он уже имеется в списке, посмотрите clicks!");
         });
         handler.register("clicks", "добавить игрока в ожидание клика", (args) -> {
-            awaitingClick.each(nyah->Log.info("@ @", nyah.plainName(), nyah.uuid()));
+            awaitingClick.each(p->Log.info("@ @", p.plainName(), p.uuid()));
         });
     }
 

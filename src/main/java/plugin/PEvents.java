@@ -87,8 +87,14 @@ public class PEvents {
                 Timer.schedule(() -> {
                     if (player.team() != Team.derelict && Groups.player.find(p -> p.uuid().equals(player.uuid())) == null) {
                         Groups.build.each(b -> {
-                            if (b.team == player.team())
+                            Log.info("Обрабатываем группу: " + b);
+                            if (b.team == player.team() && isOwner(player, player.team())) {
+                                Log.info("Удаляем группу: " + b);
                                 b.kill();
+                                if (b == null) {
+                                    Log.info("Группа удалена: " + b);
+                                }
+                            }
                         });
                         TeamDat fdat = playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == player.team());
                         if (fdat != null) {
