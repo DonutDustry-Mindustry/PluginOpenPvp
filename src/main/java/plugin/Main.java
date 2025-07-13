@@ -50,13 +50,14 @@ public class Main extends Plugin {
         handler.<Player>register("teams", "Посмотреть занятые команды.", (args, player) -> playerTeams.each(t->player.sendMessage(t.getTeam().coloredName())));
         handler.<Player>register("spectate", "Перейти в серую команду.", (args, player) ->{
             if (player.team() != Team.derelict) {
-                playerTeams.remove(playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == player.team()));
+                playerTeams.remove(playerTeams.find(p -> p.getTeam() == player.team()));
                 if (Groups.player.size() == 2)
                     gameStarted = false;
                 player.unit().kill();
+		Log.info(isOwner(player, player.team()));
                 Groups.build.each(b -> {
-                    if (b.team == player.team())
-                        b.kill();
+                    if (b.team == player.team() && isOwner(player, player.team()))
+		        b.kill();
                 });
                 player.team(Team.derelict);
             } else {
