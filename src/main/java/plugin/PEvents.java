@@ -87,8 +87,13 @@ public class PEvents {
                 Timer.schedule(() -> {
                     if (player.team() != Team.derelict && Groups.player.find(p -> p.uuid().equals(player.uuid())) == null) {
                         Groups.build.each(b -> {
+                            Log.info(b.team == player.team());
+                            Log.info(b.team.equals(player.team()));
                             if (b.team == player.team()) {
                                 b.kill();
+                            }
+                            if (b == null) {
+                                Log.info("Блоки удалены");
                             }
                         });
                         TeamDat fdat = playerTeams.find(SVOGOYDA -> SVOGOYDA.getTeam() == player.team());
