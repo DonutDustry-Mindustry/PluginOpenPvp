@@ -219,13 +219,8 @@ public class PEvents {
                             p.unit().kill();
                     }
                 }
-            });
-            if (playerTeams.size < 2 && gameStarted) {
-                Call.sendMessage(playerTeams.find(eb -> eb.getTeam().cores() != null).getTeam().coloredName() + " [green]wins!");
-                Events.fire(new EventType.GameOverEvent(playerTeams.find(eb -> eb.getTeam().cores() != null).getTeam()));
-                gameStarted = false;
-            }
-        });
+	    });
+	});
         Events.on(EventType.WorldLoadEvent.class, e -> Timer.schedule(() -> {
             Rules rules = Vars.state.rules.copy();
             if (rules.pvp)
