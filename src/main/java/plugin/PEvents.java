@@ -101,7 +101,7 @@ public class PEvents {
                         /* if (leftDatas.contains(leftPlayer))
                             leftDatas.remove(leftPlayer); */
                     } 
-                }, 300);
+                }, 3);
             }
         });
 
